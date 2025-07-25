@@ -1,0 +1,1 @@
+<img src="StepCounterWidget.png" width="300" alt="StepCounterWidget" />

@@ -45,12 +45,49 @@ struct StepCounterWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+        VStack(alignment: .leading, spacing: 0) {
+            Text("4,790")
+                .font(.system(size: 30, weight: .bold).monospaced())
+            
+            Text("steps")
+                .font(.system(size: 20, weight: .bold).monospaced())
+                .foregroundStyle(.secondary)
+            
+            Spacer()
+            
+            HStack {
+                Image(systemName: "bolt.fill")
+                Text("176 days!")
+            }
+            .font(.system(size: 16).monospaced())
+            .padding(.bottom, 4)
+            
+            StepProgress(progress: 6)
+        }
+        .foregroundStyle(.green)
+    }
+}
 
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+struct StepProgress: View {
+    let progress: Int
+    let rows: Int = 2
+    let segmentsPerRow: Int = 5
+    let spacing: CGFloat = 3
+    
+    var body: some View {
+        VStack(spacing: 3) {
+            ForEach(1...rows, id: \.self) { row in
+                HStack(spacing: spacing) {
+                    ForEach(1...segmentsPerRow, id: \.self) { segment in
+                        let index = (row - 1) * segmentsPerRow + segment
+                        let isFilled = index <= progress
+                        
+                        Rectangle()
+                            .frame(height: 5)
+                            .foregroundStyle(isFilled ? .primary : .secondary)
+                    }
+                }
+            }
         }
     }
 }
@@ -61,7 +98,7 @@ struct StepCounterWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             StepCounterWidgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .containerBackground(.black, for: .widget)
         }
     }
 }
